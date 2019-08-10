@@ -1,0 +1,13 @@
+//include ':comkit-core', ':comkit-annotation', ':comkit-processor', ':comkit-plugin'
+
+include ':app', ':message', ':contact', ':me', ':base', ':comkit-core', ':comkit-annotation', ':comkit-processor', ':comkit-plugin'
+project(':app').projectDir = new File('sample/app')
+project(':message').projectDir = new File('sample/message')
+project(':contact').projectDir = new File('sample/contact')
+project(':me').projectDir = new File('sample/me')
+project(':base').projectDir = new File('sample/base')
+
+gradle.beforeProject {
+    File localRepoDir = new File(rootDir, 'local-repo')
+    gradle.rootProject.ext.localRepoPath = localRepoDir.absolutePath
+}

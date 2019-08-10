@@ -1,0 +1,38 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        maven { url uri(rootProject.localRepoPath) }
+        maven { url 'https://raw.githubusercontent.com/fangdawei/maven-repo/master/' }
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$build_gradle_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath "club.fdawei.nrouter:nrouter-plugin:$nrouter_version"
+
+        classpath "com.novoda:bintray-release:$bintray_version"
+
+        File localRepoDir = new File(rootProject.localRepoPath)
+        if (localRepoDir.exists()) {
+            classpath "club.fdawei.comkit:comkit-plugin:$comkit_lib_version"
+        }
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url uri(rootProject.localRepoPath) }
+        maven { url 'https://raw.githubusercontent.com/fangdawei/maven-repo/master/' }
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

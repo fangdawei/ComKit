@@ -1,0 +1,44 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'maven'
+apply plugin: 'com.novoda.bintray-release'
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'com.squareup:kotlinpoet:1.3.0'
+    implementation project(':comkit-annotation')
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+group = "$comkit_lib_group"
+version = "$comkit_lib_version"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(rootProject.localRepoPath))
+            pom.groupId = "$comkit_lib_group"
+            pom.artifactId = "comkit-processor"
+            pom.version = "$comkit_lib_version"
+        }
+    }
+}
+
+publish {
+    repoName = 'maven'
+    userOrg = 'fangdawei'
+    groupId = "$comkit_lib_group"
+    artifactId = 'comkit-processor'
+    publishVersion = "$comkit_lib_version"
+    desc = 'ComKit'
+}
+
+tasks.withType(Javadoc) {//防止编码问题
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
