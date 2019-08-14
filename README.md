@@ -111,7 +111,4 @@ class SampleAppDelegate : IAppDelegate {
     }
 }
 ```
-在AppDelegate中，你可以做原本需要在Application中做的事情。
-
-
-
+这样，在AppDelegate中，你可以做原本需要在Application中做的事情。
