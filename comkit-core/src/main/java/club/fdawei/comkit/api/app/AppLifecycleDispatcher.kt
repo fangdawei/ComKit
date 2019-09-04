@@ -6,7 +6,7 @@ import android.content.res.Configuration
 /**
  * Created by david on 2019/07/19.
  */
-object AppDelegateDispatcher : IAppDelegate {
+object AppLifecycleDispatcher : IAppDelegate {
 
     private var delegateContainer: AbsAppDelegateContainer? = null
 

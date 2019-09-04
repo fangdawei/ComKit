@@ -21,8 +21,8 @@ class ClassInfo {
         static final String METHOD_ADD_PROVIDER = 'addProvider'
     }
 
-    final static class AppDelegateDispatcher {
-        static final String NAME = 'club.fdawei.comkit.api.app.AppDelegateDispatcher'
+    final static class AppLifecycleDispatcher {
+        static final String NAME = 'club.fdawei.comkit.api.app.AppLifecycleDispatcher'
         static final String METHOD_INIT = 'init'
     }
 

@@ -246,9 +246,9 @@ class AppDelegateCollector {
         }
 
         // hook onCreate
-        def dispatcherInitSrc = "${AppDelegateDispatcher.NAME}.INSTANCE." +
-                "${AppDelegateDispatcher.METHOD_INIT}(new ${AppDelegateContainer.NAME}());"
-        def delegateCreateSrc = "${AppDelegateDispatcher.NAME}.INSTANCE.${IAppDelegate.METHOD_ON_CREATE}(this);"
+        def dispatcherInitSrc = "${AppLifecycleDispatcher.NAME}.INSTANCE." +
+                "${AppLifecycleDispatcher.METHOD_INIT}(new ${AppDelegateContainer.NAME}());"
+        def delegateCreateSrc = "${AppLifecycleDispatcher.NAME}.INSTANCE.${IAppDelegate.METHOD_ON_CREATE}(this);"
         try {
             def onCreateCtMethod = appCtClass.getDeclaredMethod(IAppDelegate.METHOD_ON_CREATE)
             onCreateCtMethod.insertBefore(dispatcherInitSrc)
@@ -264,7 +264,7 @@ class AppDelegateCollector {
         }
 
         // hook onTerminate
-        def delegateTerminateSrc = "${AppDelegateDispatcher.NAME}.INSTANCE.${IAppDelegate.METHOD_ON_TERMINATE}();"
+        def delegateTerminateSrc = "${AppLifecycleDispatcher.NAME}.INSTANCE.${IAppDelegate.METHOD_ON_TERMINATE}();"
         try {
             def onTerminateCtMethod = appCtClass.getDeclaredMethod(IAppDelegate.METHOD_ON_TERMINATE)
             onTerminateCtMethod.insertAfter(delegateTerminateSrc)
@@ -280,21 +280,21 @@ class AppDelegateCollector {
         // hook onConfigurationChanged
         try {
             def onConfigChangedCtMethod = appCtClass.getDeclaredMethod(IAppDelegate.METHOD_ON_CONFIG_CHANGED)
-            onConfigChangedCtMethod.insertAfter("${AppDelegateDispatcher.NAME}.INSTANCE." +
+            onConfigChangedCtMethod.insertAfter("${AppLifecycleDispatcher.NAME}.INSTANCE." +
                     "${IAppDelegate.METHOD_ON_CONFIG_CHANGED}(\$\$);")
         } catch (NotFoundException ignored) {
             def onConfigChangedSrcBuilder = new StringBuilder()
             onConfigChangedSrcBuilder.append("public void ${IAppDelegate.METHOD_ON_CONFIG_CHANGED}(" +
                     "${Configuration.NAME} newConfig) {")
             onConfigChangedSrcBuilder.append("super.${IAppDelegate.METHOD_ON_CONFIG_CHANGED}(newConfig);")
-            onConfigChangedSrcBuilder.append("${AppDelegateDispatcher.NAME}.INSTANCE." +
+            onConfigChangedSrcBuilder.append("${AppLifecycleDispatcher.NAME}.INSTANCE." +
                     "${IAppDelegate.METHOD_ON_CONFIG_CHANGED}(newConfig);")
             onConfigChangedSrcBuilder.append('}')
             appCtClass.addMethod(CtNewMethod.make(onConfigChangedSrcBuilder.toString(), appCtClass))
         }
 
         // hook onLowMemory
-        def delegateLowMemorySrc = "${AppDelegateDispatcher.NAME}.INSTANCE.${IAppDelegate.METHOD_ON_LOW_MEMORY}();"
+        def delegateLowMemorySrc = "${AppLifecycleDispatcher.NAME}.INSTANCE.${IAppDelegate.METHOD_ON_LOW_MEMORY}();"
         try {
             def onLowMemoryCtMethod = appCtClass.getDeclaredMethod(IAppDelegate.METHOD_ON_LOW_MEMORY)
             onLowMemoryCtMethod.insertAfter(delegateLowMemorySrc)
@@ -310,13 +310,13 @@ class AppDelegateCollector {
         // hook onTrimMemory
         try {
             def onTrimMemoryCtMethod = appCtClass.getDeclaredMethod(IAppDelegate.METHOD_ON_TRIM_MEMORY)
-            onTrimMemoryCtMethod.insertAfter("${AppDelegateDispatcher.NAME}.INSTANCE." +
+            onTrimMemoryCtMethod.insertAfter("${AppLifecycleDispatcher.NAME}.INSTANCE." +
                     "${IAppDelegate.METHOD_ON_TRIM_MEMORY}(\$\$);")
         } catch (NotFoundException ignored) {
             def onTrimMemorySrcBuilder = new StringBuilder()
             onTrimMemorySrcBuilder.append("public void ${IAppDelegate.METHOD_ON_TRIM_MEMORY}(int level) {")
             onTrimMemorySrcBuilder.append("super.${IAppDelegate.METHOD_ON_TRIM_MEMORY}(level);")
-            onTrimMemorySrcBuilder.append("${AppDelegateDispatcher.NAME}.INSTANCE." +
+            onTrimMemorySrcBuilder.append("${AppLifecycleDispatcher.NAME}.INSTANCE." +
                     "${IAppDelegate.METHOD_ON_TRIM_MEMORY}(level);")
             onTrimMemorySrcBuilder.append('}')
             appCtClass.addMethod(CtNewMethod.make(onTrimMemorySrcBuilder.toString(), appCtClass))
